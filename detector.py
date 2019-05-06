@@ -1,6 +1,6 @@
 import dlib
 import cv2
-
+ 
 
 class ObjectDetector(object):
     def __init__(self,options=None,loadPath=None):
