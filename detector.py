@@ -53,6 +53,7 @@ class ObjectDetector(object):
         return preds
 
     def detect(self,image,annotate=None):
+        ret=0
         image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
         preds = self.predict(image)
         for (x,y,xb,yb) in preds:
@@ -62,5 +63,7 @@ class ObjectDetector(object):
             cv2.rectangle(image,(x,y),(xb,yb),(0,0,255),2)
             if annotate is not None and type(annotate)==str:
                 cv2.putText(image,annotate,(x+5,y-5),cv2.FONT_HERSHEY_SIMPLEX,1.0,(128,255,0),2)
-        cv2.imshow("Detected",image)
-        cv2.waitKey(0)
+                ret=1
+        # cv2.imshow("Detected",image)
+        # cv2.waitKey(0)
+        return ret
