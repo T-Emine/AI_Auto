@@ -15,7 +15,7 @@ detector = ObjectDetector(loadPath=args["detector"])
 # imagePath = args["image"]
 #imagePath = "./1.jpg"
 #image = cv2.imread(imagePath)
-for imagePath in list_images("./TestR"):
+for imagePath in list_images("./Test"):
     #load image and create a BoxSelector instance
     image = cv2.imread(imagePath)
     #bs = BoxSelector(image,"Image")

@@ -8,6 +8,7 @@ class ObjectDetector(object):
         self.options = options
         if self.options is None:
             self.options = dlib.simple_object_detector_training_options()
+            self.options.C=3
 
         #load the trained detector (for testing)
         if loadPath is not None:
@@ -54,16 +55,15 @@ class ObjectDetector(object):
 
     def detect(self,image,annotate=None):
         ret=0
-        image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB) ## met en BGR
         preds = self.predict(image)
         for (x,y,xb,yb) in preds:
             image = cv2.cvtColor(image,cv2.COLOR_RGB2BGR)
-
             #draw and annotate on image
             cv2.rectangle(image,(x,y),(xb,yb),(0,0,255),2)
             if annotate is not None and type(annotate)==str:
-                cv2.putText(image,annotate,(x+5,y-5),cv2.FONT_HERSHEY_SIMPLEX,1.0,(128,255,0),2)
+                #cv2.putText(image,annotate,(x+5,y-5),cv2.FONT_HERSHEY_SIMPLEX,1.0,(128,255,0),2)
                 ret=1
-        # cv2.imshow("Detected",image)
-        # cv2.waitKey(0)
+            # cv2.imshow("Detected",image)
+            # cv2.waitKey(0)
         return ret

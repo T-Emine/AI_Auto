@@ -15,6 +15,8 @@ sio = socketio.Server()
 # event sent by the simulator
 class Angle:
     val=0
+    trot=0
+    b=0
 ang=Angle()
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -41,20 +43,37 @@ def telemetry(sid, data):
         im=Image.open(BytesIO(base64.b64decode(data["image"])))
         im.save("img.jpg")
         image = cv2.imread("./img.jpg")
-        z = detector.detect(image, annotate=args["annotate"])
-        x = detectorR.detect(image, annotate=args["annotateL"])
-        y = detectorL.detect(image, annotate=args["annotateR"])
+        center = detector.detect(image, annotate=args["annotate"])
+        right = detectorR.detect(image, annotate=args["annotateL"])
+        left = detectorL.detect(image, annotate=args["annotateR"])
         # Use your model to compute steering and throttle
-        if x==1:
-            ang.val-=0.018
-        # if y==1:
-        #     angle -= 0.04
-        #     steer = angle
-        if z==1:
-            ang.val=0
-        throttle = 0.2
+        # if right==1:
+        #     ang.val-=0.0181
+        #     ang.trot=0
+        # if center == 1:
+        #     ang.val = 0
+        #     ang.trot = 0.2
+        # elif right==1:
+        #     ang.val -= 0.033
+        #     ang.trot = 0
+
+        if right == 1:
+            if ang.b==0:
+                ang.val=0
+            else:
+                ang.val-=0.004
+                ang.trot-=0.01
+            ang.b = 1
+        elif left==1:
+            if ang.b ==1:
+                ang.val=0
+            else:
+                ang.val += 0.004
+                ang.trot-=0.01
+            ang.b=0
+        ang.trot = 0.1
         # response to the simulator with a steer angle and throttle
-        send(ang.val, throttle)
+        send(ang.val, ang.trot)
     else:
         # Edge case
         sio.emit('manual', data={}, skip_sid=True)

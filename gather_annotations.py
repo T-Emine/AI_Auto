@@ -32,9 +32,9 @@ for imagePath in list_images(args["dataset"]):
     #Center
     #annotations.append([99,86,183,131])
     #Rigth
-    #annotations.append([217,122,318,157])
+    #annotations.append([221,74,319,111])
     #Left
-    annotations.append([0,85,53,158])
+    annotations.append([0,74,97,107])
     # imPaths.append(imagePath)
     # imPaths.append(imagePath)
     imPaths.append(imagePath)
